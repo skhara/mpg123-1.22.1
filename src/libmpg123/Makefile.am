@@ -44,7 +44,7 @@ libmpg123_la_SOURCES = \
 	libmpg123.c \
 	index.c
 
-NDK_EXTRA_libmpg123_la_SOURCES = \
+EXTRA_ndk_libmpg123_la_SOURCES = \
 	icy.c \
 	icy2utf8.c \
 	layer1.c \
@@ -182,7 +182,7 @@ Android.mk: Makefile.am
 		-:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
 		-:SHARED libmpg123 \
 		-:SOURCES $(libmpg123_la_SOURCES) \
-				$(NDK_EXTRA_libmpg123_la_SOURCES) \
+				$(EXTRA_ndk_libmpg123_la_SOURCES) \
 		-:CFLAGS -DOPT_ARM \
 		-:LDFLAGS $(libmpg123_la_LDFLAGS) \
 		-:HEADERS $(nodist_include_HEADERS) \
