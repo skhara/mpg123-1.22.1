@@ -1,0 +1,16 @@
+This is a git fork of the open source mpg123 player (version 1.22.1), hosted at http://sourceforge.net/projects/mpg123/
+
+I used it to port its libmpg123 library to Android with androigenizer tool (http://cgit.collabora.com/git/android/androgenizer.git)
+
+For the moment, it has a target 'Android.mk' added to Makefile.am files, to create Android.mk file in libmpg123 folder, which
+is necessary to build libmpg123 library with ndk-build utility (i used Android NDK r10d).
+
+So the steps one can use to build the library with ndk-build are the next:
+
++ make sure you have androgenizer tool compiled and available inside your shell as 'androigenizer' command
++ go to the mpg123 progect root folder and recreate Makefile.in files with Automake (it can be done running 'autoreconf -iv')
++ run './configire --with-cpu=arm_nofpu'. With the '--with-cpu=arm_nofpu' 'configure' script uncomments necessary options in config.h file
++ run 'make Android.mk' to generate Android.mk
++ copy the contents of ./src/libmpg123 folder to ./src/jni folder
++ copy ./src/config.h file to ./src/jni/ folder
++ go to the ./src/jni folder and run 'ndk-build' 
