@@ -98,3 +98,9 @@ EXTRA_DIST = \
 	scripts/tag_lyrics.py \
 	scripts/conplay \
 	scripts/mpg123info
+
+.PHONY: Android.mk
+
+Android.mk:
+	cd src && $(MAKE) $@
+

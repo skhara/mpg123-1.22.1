@@ -18,7 +18,7 @@ testcpu_sources = testcpu.c
 testcpu_LDADD = getcpuflags.$(OBJEXT)
 
 
-CLEANFILES = *.a
+CLEANFILES = *.a *.mk
 
 
 # The library can have different names, depending on largefile setup.
@@ -31,57 +31,41 @@ libmpg123_la_LIBADD = @DECODER_LOBJ@ @LFS_LOBJ@
 libmpg123_la_DEPENDENCIES = @DECODER_LOBJ@ @LFS_LOBJ@
 
 libmpg123_la_SOURCES = \
-	intsym.h \
 	compat.c \
-	compat.h \
-	mpeghead.h \
 	parse.c \
-	parse.h \
 	frame.c \
 	format.c \
-	frame.h \
-	reader.h \
-	debug.h \
-	decode.h \
-	sample.h \
 	dct64.c \
-	synth.h \
-	synth_mono.h \
-	synth_ntom.h \
-	synth_8bit.h \
-	synths.h \
 	equalizer.c \
-	huffman.h \
-	newhuffman.h \
-	icy.h \
-	icy2utf8.h \
-	id3.h \
 	id3.c \
-	true.h \
-	getbits.h \
-	optimize.h \
 	optimize.c \
 	readers.c \
 	tabinit.c \
 	libmpg123.c \
-	gapless.h \
-	mpg123lib_intern.h \
-	abi_align.h \
-	mangle.h \
-	getcpuflags.h \
-	index.h \
 	index.c
 
+NDK_EXTRA_libmpg123_la_SOURCES = \
+	icy.c \
+	icy2utf8.c \
+	layer1.c \
+	layer2.c \
+	layer3.c \
+	dither.c \
+	feature.c \
+	ntom.c \
+	synth.c \
+	stringbuf.c \
+	synth_8bit.c \
+	synth_arm.S 
+	
 EXTRA_libmpg123_la_SOURCES = \
 	lfs_alias.c \
 	lfs_wrap.c \
 	icy.c \
 	icy2utf8.c \
-	l2tables.h \
 	layer1.c \
 	layer2.c \
 	layer3.c \
-	dither.h \
 	dither.c \
 	feature.c \
 	dct36_3dnowext.S \
@@ -114,7 +98,6 @@ EXTRA_libmpg123_la_SOURCES = \
 	synth_i586_dither.S \
 	synth_i586.S \
 	synth_mmx.S \
-	synth_sse3d.h \
 	synth_sse.S \
 	synth_sse_float.S \
 	synth_sse_s32.S \
@@ -163,9 +146,7 @@ EXTRA_libmpg123_la_SOURCES = \
 	getcpuflags.S \
 	getcpuflags_x86_64.S \
 	getcpuflags_arm.c \
-	check_neon.S \
-	l12_integer_tables.h \
-	l3_integer_tables.h
+	check_neon.S 
 
 if USE_YASM_FOR_AVX
 ## Override rules for the sources that should be assembled with yasm
@@ -195,3 +176,14 @@ $(AVX_OBJS:.@OBJEXT@=.lo): %.lo: %.@OBJEXT@
 	@echo "non_pic_object='$<'" >>$@
 
 endif
+
+Android.mk: Makefile.am
+		androgenizer -:PROJECT libmpg123 \
+		-:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
+		-:SHARED libmpg123 \
+		-:SOURCES $(libmpg123_la_SOURCES) \
+				$(NDK_EXTRA_libmpg123_la_SOURCES) \
+		-:CFLAGS -DOPT_ARM \
+		-:LDFLAGS $(libmpg123_la_LDFLAGS) \
+		-:HEADERS $(nodist_include_HEADERS) \
+> $@

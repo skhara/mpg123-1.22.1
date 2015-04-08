@@ -235,3 +235,9 @@ libmpg123/compat.c
 
 tests_plain_id3_DEPENDENCIES = libmpg123/libmpg123.la
 tests_plain_id3_LDADD = libmpg123/libmpg123.la
+
+.PHONY: Android.mk
+
+Android.mk:
+	cd libmpg123 && $(MAKE) $@
+
