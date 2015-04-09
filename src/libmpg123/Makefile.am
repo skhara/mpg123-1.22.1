@@ -180,10 +180,11 @@ endif
 Android.mk: Makefile.am
 		androgenizer -:PROJECT libmpg123 \
 		-:REL_TOP $(top_srcdir) -:ABS_TOP $(abs_top_srcdir) \
-		-:SHARED libmpg123 \
+		-:STATIC libmpg123 \
 		-:SOURCES $(libmpg123_la_SOURCES) \
 				$(EXTRA_ndk_libmpg123_la_SOURCES) \
 		-:CFLAGS -DOPT_ARM \
 		-:LDFLAGS $(libmpg123_la_LDFLAGS) \
 		-:HEADERS $(nodist_include_HEADERS) \
+		-:PASSTHROUGH LOCAL_ARM_MODE:=arm \
 > $@
